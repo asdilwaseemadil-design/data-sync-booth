@@ -30,6 +30,30 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    // Initialize demo users if not exists
+    const existingUsers = JSON.parse(localStorage.getItem('registeredUsers') || '[]');
+    if (existingUsers.length === 0) {
+      const demoUsers = [
+        {
+          id: 'demo-user-1',
+          name: 'Demo User',
+          email: 'user@demo.com',
+          password: 'demo123',
+          role: 'user',
+          createdAt: new Date().toISOString()
+        },
+        {
+          id: 'demo-admin-1',
+          name: 'Demo Admin',
+          email: 'admin@demo.com',
+          password: 'admin123',
+          role: 'admin',
+          createdAt: new Date().toISOString()
+        }
+      ];
+      localStorage.setItem('registeredUsers', JSON.stringify(demoUsers));
+    }
+
     // Check for stored user session
     const storedUser = localStorage.getItem('currentUser');
     if (storedUser) {
