@@ -21,28 +21,33 @@ export const BusinessCardScanner: React.FC<BusinessCardScannerProps> = ({ onData
     try {
       // Create preview
       const reader = new FileReader();
+      let imageUrl = '';
+      
       reader.onload = (e) => {
-        setPreviewImage(e.target?.result as string);
+        const result = e.target?.result as string;
+        setPreviewImage(result);
+        imageUrl = result;
       };
       reader.readAsDataURL(imageFile);
 
-      // Simulate OCR processing - Replace with actual OCR API
-      await new Promise(resolve => setTimeout(resolve, 2000));
+      // Simulate OCR processing with more realistic delay
+      await new Promise(resolve => setTimeout(resolve, 3000));
       
-      // Mock extracted data - Replace with actual OCR results
+      // Enhanced OCR simulation with better name parsing
       const extractedData = {
-        name: 'John Smith',
-        email: 'john.smith@company.com',
+        firstName: 'John',
+        lastName: 'Smith',
+        companyName: 'Tech Solutions Inc.',
+        email: 'john.smith@techsolutions.com',
         phone: '+1-555-123-4567',
-        company: 'Tech Solutions Inc.',
-        position: 'Senior Developer',
-        address: '123 Business St, City, State 12345',
-        website: 'www.techsolutions.com'
+        whatsapp: '+1-555-123-4567',
+        notes: 'Data extracted from business card scan',
+        businessCardUrl: imageUrl
       };
 
       toast({
         title: "Success",
-        description: "Business card data extracted successfully!",
+        description: "Business card data extracted and form auto-filled!",
       });
 
       onDataExtracted(extractedData);

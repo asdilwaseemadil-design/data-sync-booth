@@ -24,14 +24,23 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
 interface ContactData {
   id: string;
-  name: string;
+  rep: string;
+  relevancy: string;
+  companyName: string;
+  firstName: string;
+  lastName: string;
   email: string;
   phone: string;
-  company: string;
-  position: string;
-  address: string;
-  website: string;
+  whatsapp: string;
+  partnerDetails: string[];
+  targetRegions: string[];
+  lob: string[];
+  tier: string;
+  grades: string[];
+  volume: string;
+  addAssociates: string;
   notes: string;
+  businessCardUrl: string;
   submittedAt: string;
   userId: string;
 }
@@ -84,20 +93,21 @@ export const UserDashboard: React.FC = () => {
       return;
     }
 
-    const headers = ['Name', 'Email', 'Phone', 'Company', 'Position', 'Address', 'Website', 'Notes', 'Submitted At'];
+    const headers = ['First Name', 'Last Name', 'Email', 'Phone', 'WhatsApp', 'Company', 'Rep', 'Relevancy', 'Notes', 'Submitted At'];
     const csvContent = [
       headers.join(','),
       ...submissions.map(sub => [
-        sub.name,
+        sub.firstName,
+        sub.lastName,
         sub.email,
         sub.phone,
-        sub.company,
-        sub.position,
-        sub.address,
-        sub.website,
+        sub.whatsapp,
+        sub.companyName,
+        sub.rep,
+        sub.relevancy,
         sub.notes,
         new Date(sub.submittedAt).toLocaleString()
-      ].map(field => `"${field}"`).join(','))
+      ].map(field => `"${field || ''}"`).join(','))
     ].join('\n');
 
     const blob = new Blob([csvContent], { type: 'text/csv' });
@@ -123,7 +133,7 @@ export const UserDashboard: React.FC = () => {
       new Date(sub.submittedAt) >= thisMonth
     );
 
-    const uniqueCompanies = new Set(submissions.map(sub => sub.company)).size;
+    const uniqueCompanies = new Set(submissions.map(sub => sub.companyName)).size;
 
     return {
       totalSubmissions: submissions.length,
@@ -256,11 +266,11 @@ export const UserDashboard: React.FC = () => {
                     <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4">
                       <div className="flex-1 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                         <div>
-                          <h3 className="font-semibold">{submission.name}</h3>
-                          <p className="text-sm text-muted-foreground">{submission.position}</p>
+                          <h3 className="font-semibold">{submission.firstName} {submission.lastName}</h3>
+                          <p className="text-sm text-muted-foreground">{submission.rep}</p>
                         </div>
                         <div>
-                          <p className="font-medium">{submission.company}</p>
+                          <p className="font-medium">{submission.companyName}</p>
                           <p className="text-sm text-muted-foreground">{submission.email}</p>
                         </div>
                         <div>
